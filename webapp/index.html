@@ -904,6 +904,9 @@ a.btn { text-decoration: none; }
     [/^Terrace for up to (\d+)$/, "$1 kishigacha ayvon", "Терраса до $1 человек"],
     [/^(.+) paid and attached a receipt$/, "$1 to'ladi va chek biriktirdi", "$1: оплачено, чек приложен"],
     [/^Round (\d+) started\. This month's payout goes to (.+)\.$/, "$1-davra boshlandi. Bu oy pulni $2 oladi.", "Начался круг $1. В этом месяце выплату получает $2."],
+    [/^Gathering set: (.+?), (Sun|Mon|Tue|Wed|Thu|Fri|Sat), (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2})\. Are you going\?$/,
+      function (g) { return "Gap kuni belgilandi: " + g[0] + ", " + evDate(g, "uz") + ". Borasizmi?"; },
+      function (g) { return "Встреча назначена: " + g[0] + ", " + evDate(g, "ru") + ". Вы придёте?"; }],
     [/^Gathering set: (.+?)\. Are you going\?$/, "Gap kuni belgilandi: $1. Borasizmi?", "Встреча назначена: $1. Вы придёте?"],
     [/^Gathering set: (.+?)\.?$/, "Gap kuni belgilandi: $1.", "Встреча назначена: $1."],
     [/^Order drawn\. (.+) receives first, in (.+)\.$/, "Qur'a tashlandi. Birinchi bo'lib $1 oladi, $2.", "Жеребьёвка проведена. Первым получает $1, $2."],
@@ -950,6 +953,12 @@ a.btn { text-decoration: none; }
     [/^Couldn't copy\. (.+)$/, "Nusxa olib bo'lmadi. $1", "Не удалось скопировать. $1"],
     [/^Gathering (.+)$/, "Gap kuni $1", "Встреча $1"]
   ];
+  var EN_D = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], EN_M = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  var RU_MG = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"], RU_D = ["вс", "пн", "вт", "ср", "чт", "пт", "сб"];
+  function evDate(g, l) {
+    var d = EN_D.indexOf(g[1]), m = EN_M.indexOf(g[2]);
+    return l === "uz" ? g[3] + "-" + UZ_MONTHS[m] + ", " + UZ_DAYS[d] : g[3] + " " + RU_MG[m] + ", " + RU_D[d];
+  }
   function trCore(s) {
     var lang = L(), d = TR[lang];
     if (d[s] !== undefined) return d[s];
