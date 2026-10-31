@@ -1,0 +1,4 @@
+# Replace with your domain. Its DNS must point to this server. Caddy gets the HTTPS certificate automatically.
+app.gapjon.uz {
+	reverse_proxy gapjon:8080
+}

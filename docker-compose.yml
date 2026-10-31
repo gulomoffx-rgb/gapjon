@@ -1,0 +1,23 @@
+services:
+  gapjon:
+    build: .
+    env_file: .env
+    volumes:
+      - ./data:/app/data
+    ports:
+      - "127.0.0.1:8080:8080"
+    restart: unless-stopped
+
+  # HTTPS in front of the app (Telegram requires HTTPS). Set your domain in Caddyfile.
+  caddy:
+    image: caddy:2
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+    restart: unless-stopped
+
+volumes:
+  caddy_data:
